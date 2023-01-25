@@ -32,14 +32,14 @@ conda install -c bioconda jellyfish
 ## A simple pipeline
 `Jellyfish` is a kmer counting tool. Let us use the following pipeline:
 
-genome_file.fasta
-
 ```mermaid
 graph TD;
-    A-->B;
-    A-->C;
-    B-->D;
-    C-->D;
+    genome_file.fasta-->jellyfish_count;
+    jellyfish_count-->binary_file;
+    binary_file-->jellyfish_histo;
+    jellyfish_histo-->kmer_count_spectrum;
+    kmer_count_spectrum-->plotter;
+    plotter-->plot;
 ```
 
 ## Writing the pipeline in snakemake
