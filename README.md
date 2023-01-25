@@ -102,14 +102,14 @@ rule jf_histo:
     shell:
         "jellyfish histo data/mer_counts_ecoli_ed1a.jf -o data/kmer_count_histogram_ecoli_ed1a"
 
-    rule plot:
-        input:
-            "data/kmer_count_histogram_ecoli_ed1a",
-            "plotter.py"
-        output:
-            "results/kspectrum_plot_ecoli_ed1a.pdf"
-        shell:
-            "python plotter.py data/kmer_count_histogram_ecoli_ed1a results/kspectrum_plot_ecoli_ed1a.pdf"
+rule plot:
+    input:
+        "data/kmer_count_histogram_ecoli_ed1a",
+        "plotter.py"
+    output:
+        "results/kspectrum_plot_ecoli_ed1a.pdf"
+    shell:
+        "python plotter.py data/kmer_count_histogram_ecoli_ed1a results/kspectrum_plot_ecoli_ed1a.pdf"
 ```
 
 ### Rule all
@@ -126,10 +126,18 @@ rule all:
 
 It is standard practice to write all desired target files as the input of the rule all. The output and shell blocks are usually left empty. Snakemake will then scan through all target files, and if any of them is missing, snakemake will try to locate a rule that generates the missing target file. This can go on recursively. If no rule is found that can generate a target file desired by rule all, error will be reported.
 
-
 ### Running the pipeline using snakemake
-### Other ways to use input list
-### Other ways to run
+
+These instructions are written in `snakefile_v1`. Command to run this is:
+
+`snakemake --snakefile snakefile_v1`
+
+### Other ways to use input/output file list
+
+If there is a file list, then it can be indexed. Therefore, instead of writing the filenames in the shell block, we can use 'input[0]' or '[output[0]'. See `snakefile_v2` for a simple example. This is the same as `snakefile_v1`, except uses these indexed notations.
+
+Another thing to note is that these are all just python strings. So, usual string manipulation works.
+
 
 ## Parallel execution
 ### Wildcards and expand

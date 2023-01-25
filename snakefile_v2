@@ -1,0 +1,31 @@
+res = 'results/'
+dat = 'data/'
+
+rule all:
+    input:
+        res+"kspectrum_plot_ecoli_ed1a.pdf"
+
+rule jf_count:
+    input:
+        dat+"ecoli_ed1a.fasta"
+    output:
+        dat+"mer_counts_ecoli_ed1a.jf"
+    shell:
+        "jellyfish count -m 15 -s 500M {input[0]} -o {output[0]}"
+
+rule jf_histo:
+    input:
+        dat+"mer_counts_ecoli_ed1a.jf"
+    output:
+        dat+"kmer_count_histogram_ecoli_ed1a"
+    shell:
+        "jellyfish histo {input[0]} -o {output[0]}"
+
+rule plot:
+    input:
+        dat+"kmer_count_histogram_ecoli_ed1a",
+        "plotter.py"
+    output:
+        res+"kspectrum_plot_ecoli_ed1a.pdf"
+    shell:
+        "python {input[1]} {input[0]} {output[0]}"
