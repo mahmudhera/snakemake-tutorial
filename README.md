@@ -34,12 +34,12 @@ conda install -c bioconda jellyfish
 
 ```mermaid
 graph TD;
-    genome_file.fasta-->jellyfish_count;
-    jellyfish_count-->binary_file;
-    binary_file-->jellyfish_histo;
-    jellyfish_histo-->kmer_count_spectrum;
-    kmer_count_spectrum-->plotter;
-    plotter-->plot;
+    A[genome_file.fasta]-->B{{jellyfish count}};
+    B-->C[binary_file];
+    C-->D{{jellyfish histo}};
+    D-->E[kmer_count_spectrum];
+    E-->F{{plotter}};
+    F-->G[final plot];
 ```
 
 ## Writing the pipeline in snakemake
