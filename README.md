@@ -16,4 +16,20 @@ After this tutorial, you will
 - Supports parallel execution of jobs
 - Records time and memory uses
 
-## A sample pipeline
+## Installation
+
+## A simple pipeline
+
+## Writing the pipeline in snakemake
+
+### The snakefile
+### Rules in snakefile
+### Running the pipeline using snakemake
+### Other ways to use input list
+### Other ways to run
+
+## Parallel execution
+### Wildcards and expand
+### Write the 'shell' block
+
+## Benchmarking using snakemake
