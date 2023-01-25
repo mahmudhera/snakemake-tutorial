@@ -18,7 +18,27 @@ After this tutorial, you will
 
 ## Installation
 
+Using conda.
+```
+conda install snakemake
+```
+
+### Tools used in this tutorial
+
+```
+conda install -c bioconda jellyfish
+```
+
 ## A simple pipeline
+`Jellyfish` is a kmer counting tool. Let us use the following pipeline:
+
+genome_file.fasta
+
+```sequence
+Alice->Bob: Hello Bob, how are you?
+Note right of Bob: Bob thinks
+Bob-->Alice: I am good thanks!
+```
 
 ## Writing the pipeline in snakemake
 
