@@ -53,6 +53,12 @@ jellyfish histo data/mer_counts_ecoli_ed1a.jf -o data/kmer_count_histogram_ecoli
 python plotter.py data/kmer_count_histogram_ecoli_ed1a results/kspectrum_plot_ecoli_ed1a.pdf
 ```
 
+### Problems in using shell (or python)
+- Change something in the plotting script: re-run everything (or change the pipeline code)
+- Run for different input files: need to run sequentially (after adding command line args)
+- Need to write extra code to measure running time
+- Difficult to measure memory usage
+
 ## Writing the pipeline in snakemake
 
 ### The snakefile
