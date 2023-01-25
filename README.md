@@ -30,6 +30,7 @@ conda install -c bioconda jellyfish
 conda install matplotlib
 conda install pandas
 conda install numpy
+conda install graphviz
 ```
 
 ## A simple pipeline
@@ -134,13 +135,75 @@ These instructions are written in `snakefile_v1`. Command to run this is:
 
 ### Other ways to use input/output file list
 
-If there is a file list, then it can be indexed. Therefore, instead of writing the filenames in the shell block, we can use 'input[0]' or '[output[0]'. See `snakefile_v2` for a simple example. This is the same as `snakefile_v1`, except uses these indexed notations.
+If there is a file list, then it can be indexed. Therefore, instead of writing the filenames in the shell block, we can use 'input[0]' or '[output[0]'. These need to be written in curly braces '{' and '}'. See `snakefile_v2` for a simple example. This is the same as `snakefile_v1`, except uses these indexed notations.
 
 Another thing to note is that these are all just python strings. So, usual string manipulation works.
 
 
 ## Parallel execution
+
+What if we wanted to run for all these E.coli strains? We would probably need to use loops, and run one after the other. It is possible to use Multiprocessing in python, but that is a lot of work. Snakemake can take care of this.
+
 ### Wildcards and expand
-### Write the 'shell' block
+
+The feature we use here is called wildcards and expand. The steps are:
+
+- In input block of rule all, use `expand(__input_string_for_filename__, card_name=<some_list>)`
+- In input/output block, do not use expand, simply use the card name
+- In shell, use `wildcards.<card_name>`
+
+For example, let us take the following rule from `snakefile_v1`, and rewrite this using wildcards.
+
+#### Rule in `snakefile_v1`
+
+```
+rule plot:
+    input:
+        "data/kmer_count_histogram_ecoli_ed1a",
+        "plotter.py"
+    output:
+        "results/kspectrum_plot_ecoli_ed1a.pdf"
+    shell:
+        "python plotter.py data/kmer_count_histogram_ecoli_ed1a results/kspectrum_plot_ecoli_ed1a.pdf"
+```
+
+#### Rule using wildcards
+
+```
+strain_names = ['ed1a', 'ko11fl', 'se15']
+
+rule plot:
+    input:
+        expand("data/kmer_count_histogram_ecoli_{strain}",strain=strain_names),
+        "plotter.py"
+    output:
+        "results/kspectrum_plot_ecoli_{strain}.pdf"
+    shell:
+        "python {input[1]} data/kmer_count_histogram_ecoli_{wildcards.strain} results/kspectrum_plot_ecoli_{wildcards.strain}.pdf"
+```
+
+Rewriting everything this way, we get `snakefile_v3`. [Demonstrate this in meeting.]
+
+### Drawing flowchart as a DAG
+
+Snakemake identifies the dependencies by constructing a directed acyclic graph (the problem of "what to do befor what" is the classic topological sort problem after all). This DAG can be shown using the following:
+
+```
+snakemake --snakefile snakefile_v3 --dag | dot -Tsvg > dag.svg
+```
+
+### Using more threads
+
+Using the DAG, it can be determined upto how many threads can be used. By using the `--cores` flag, parallel execution can be achieved. (May be different on your installation.)
+
 
 ## Benchmarking using snakemake
+Snakemake can also measure running time and memory usage. To do this, we only need to add a code block named `benchmark`, and add a filename there.
+
+Notes:
+- For some reason, the memory reporting does not work on Mac
+- Memory reports are made in MB
+
+
+## Exercise
+Extend v4 to v5, by using multiple kmer sizes.

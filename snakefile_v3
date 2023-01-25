@@ -1,0 +1,33 @@
+res = 'results/'
+dat = 'data/'
+
+strain_names = ['ed1a', 'ko11fl', 'se15']
+
+rule all:
+    input:
+        expand("results/kspectrum_plot_ecoli_{strain}.pdf", strain=strain_names)
+
+rule jf_count:
+    input:
+        "data/ecoli_{strain}.fasta"
+    output:
+        "data/mer_counts_ecoli_{strain}.jf"
+    shell:
+        "jellyfish count -m 15 -s 500M data/ecoli_{wildcards.strain}.fasta -o data/mer_counts_ecoli_{wildcards.strain}.jf"
+
+rule jf_histo:
+    input:
+        "data/mer_counts_ecoli_{strain}.jf"
+    output:
+        "data/kmer_count_histogram_ecoli_{strain}"
+    shell:
+        "jellyfish histo data/mer_counts_ecoli_{wildcards.strain}.jf -o data/kmer_count_histogram_ecoli_{wildcards.strain}"
+
+rule plot:
+    input:
+        "data/kmer_count_histogram_ecoli_{strain}",
+        "plotter.py"
+    output:
+        "results/kspectrum_plot_ecoli_{strain}.pdf"
+    shell:
+        "python plotter.py data/kmer_count_histogram_ecoli_{wildcards.strain} results/kspectrum_plot_ecoli_{wildcards.strain}.pdf"

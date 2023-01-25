@@ -1,0 +1,1 @@
+jellyfish count -m 15 -s 500M data/ecoli_se15.fasta -o data/mer_counts_ecoli_se15.jf
