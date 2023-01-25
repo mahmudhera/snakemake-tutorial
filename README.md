@@ -27,6 +27,9 @@ conda install snakemake
 
 ```
 conda install -c bioconda jellyfish
+conda install matplotlib
+conda install pandas
+conda install numpy
 ```
 
 ## A simple pipeline
@@ -40,6 +43,14 @@ graph TD;
     D-->E[kmer_count_spectrum];
     E-->F{{plotter}};
     F-->G[final plot];
+```
+
+Converting this to a shell workflow, we may have something like the following (also written in `pipeline.sh`):
+
+```
+jellyfish count -m 15 -s 500M data/ecoli_ed1a.fasta -o data/mer_counts_ecoli_ed1a.jf
+jellyfish histo data/mer_counts_ecoli_ed1a.jf -o data/kmer_count_histogram_ecoli_ed1a
+python plotter.py data/kmer_count_histogram_ecoli_ed1a results/kspectrum_plot_ecoli_ed1a.pdf
 ```
 
 ## Writing the pipeline in snakemake
