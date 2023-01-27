@@ -22,7 +22,7 @@ if __name__ == '__main__':
     df = pd.read_csv(input_filename, delimiter=' ', header=None)
     df.columns = ['A', 'B']
 
-    plt.plot( df['A'].tolist(), [math.log(c) for c in df['B'].tolist()], marker='s' )
+    plt.plot( df['A'].tolist(), [math.log(c) for c in df['B'].tolist()], marker='s', color='r' )
     plt.xlabel('count')
     plt.ylabel('Log of #kmers with this count')
     plt.savefig(output_filename)
