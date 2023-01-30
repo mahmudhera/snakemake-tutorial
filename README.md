@@ -206,4 +206,4 @@ Notes:
 
 
 ## Exercise
-Extend v4 to v5, by using multiple kmer sizes.
+Extend v4 to v5, by using multiple kmer sizes. At the end of the day, you may have to write a script to gather results from multiple output files and aggregate them into some plotting script.
